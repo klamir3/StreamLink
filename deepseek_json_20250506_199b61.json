@@ -1,0 +1,94 @@
+{
+  "name": "StreamingCommunity",
+  "version": 1,
+  "author": "YourName",
+  "icon": "https://streamingcommunity.spa/favicon.ico",
+  "description": "StreamingCommunity provider for CloudStream",
+  "types": ["MOVIE", "TV"],
+  "endpoints": [
+    {
+      "name": "Main",
+      "type": "main",
+      "url": "https://streamingcommunity.spa",
+      "expectedResponse": "HTML"
+    },
+    {
+      "name": "Search",
+      "type": "search",
+      "url": "https://streamingcommunity.spa/search?q=$query$",
+      "expectedResponse": "HTML"
+    },
+    {
+      "name": "Movie",
+      "type": "movie",
+      "url": "https://streamingcommunity.spa/watch/$id$",
+      "expectedResponse": "HTML"
+    },
+    {
+      "name": "TV",
+      "type": "tv",
+      "url": "https://streamingcommunity.spa/tv/$id$",
+      "expectedResponse": "HTML"
+    }
+  ],
+  "selectors": {
+    "search": {
+      "items": {
+        "selector": "div.film-list > div.film",
+        "title": "h2.film-title",
+        "url": "a@href",
+        "poster": "img.film-poster@src",
+        "type": {
+          "selector": "div.film-type",
+          "regex": "Serie TV|Film",
+          "mappings": {
+            "Serie TV": "TV",
+            "Film": "MOVIE"
+          }
+        }
+      }
+    },
+    "movie": {
+      "title": "h1.title",
+      "poster": "img.poster@src",
+      "year": "span.year",
+      "description": "div.description",
+      "sources": {
+        "selector": "div.player-container iframe@src",
+        "type": "EMBED"
+      }
+    },
+    "tv": {
+      "title": "h1.title",
+      "poster": "img.poster@src",
+      "year": "span.year",
+      "description": "div.description",
+      "seasons": {
+        "selector": "div.season",
+        "seasonNumber": "h2.season-title",
+        "episodes": {
+          "selector": "div.episode",
+          "episodeNumber": "span.episode-num",
+          "title": "h3.episode-title",
+          "url": "a@href",
+          "sources": {
+            "selector": "div.player-container iframe@src",
+            "type": "EMBED"
+          }
+        }
+      }
+    }
+  },
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Referer": "https://streamingcommunity.spa/"
+  },
+  "settings": [
+    {
+      "name": "quality",
+      "type": "dropdown",
+      "options": ["1080p", "720p", "480p"],
+      "default": "1080p"
+    }
+  ]
+}
